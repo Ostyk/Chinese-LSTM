@@ -5,7 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+icwb2-data/
 # Distribution / packaging
 .Python
 build/
