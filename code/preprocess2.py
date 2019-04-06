@@ -103,9 +103,9 @@ if __name__ == '__main__':
                 "dev":'../icwb2-data/gold',
                 "testing":'../icwb2-data/testing'}
     dataset = sys.argv[1]
-    print(dataset, type(dataset))
+    #print(dataset, type(dataset))
     while not dataset in datasets.keys():
-        print("Enterted dataset: "dataset)
+        print("Enterted dataset: ", dataset)
         dataset = str(sys.argv[1])
     print("Success")
     print(datasets[dataset])
