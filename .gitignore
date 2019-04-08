@@ -3,6 +3,31 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# IPython notebook checkpoints
+.ipynb_checkpoints
+/datasets
+/resources/models/
+/resources/logging/
+
+*.h5
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.pyc
+*.gz
+*tar.gz
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+
 # C extensions
 *.so
 icwb2-data/
