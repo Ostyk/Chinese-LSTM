@@ -15,9 +15,9 @@ def predict(input_path, output_path, resources_path):
     This is the skeleton of the prediction function.
     The predict function will build your model, load the weights from the checkpoint and write a new file (output_path)
     with your predictions in the BIES format.
-    
+
     The resources folder should contain everything you need to make the predictions. It is the "resources" folder in your submission.
-    
+
     N.B. DO NOT HARD CODE PATHS IN HERE. Use resource_path instead, otherwise we will not be able to run the code.
 
     :param input_path: the path of the input file to predict.
@@ -25,7 +25,7 @@ def predict(input_path, output_path, resources_path):
     :param resources_path: the path of the resources folder containing your model and stuff you might need.
     :return: None
     """
-
+    print(input_path, output_path, resources_path)
     pass
 
 

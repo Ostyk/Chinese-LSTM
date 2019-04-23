@@ -5,7 +5,7 @@ import sys
 
 class Preprocess(object):
     '''initial preprocessing of files, including translation and converting formatting'''
-    
+
     def __init__(self, dataset_path):
         self.dataset_path = dataset_path
 
@@ -104,7 +104,7 @@ if __name__ == '__main__':
 
     datasets = {"training":'../icwb2-data/training',
                 "dev":'../icwb2-data/gold',
-                "testing":'../icwb2-data/testing'}
+                "testing":'../icwb2-data/testing'}#not acutally used
     dataset = sys.argv[1]
     #print(dataset, type(dataset))
     while not dataset in datasets.keys():
