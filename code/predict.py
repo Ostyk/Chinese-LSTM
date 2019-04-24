@@ -33,7 +33,7 @@ def predict(input_path, output_path, resources_path):
     """
 
 
-    print(input_path, output_path, resources_path)
+    #print(input_path, output_path, resources_path)
     #loading dictionary contiaining vocabularies of unigrams and bigrams
     with open(os.path.join(resources_path, 'vocabs/msr_pku_30.json')) as f:
         loaded_data = json.load(f)

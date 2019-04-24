@@ -58,19 +58,86 @@
 \tableofcontents
 \clearpage
 \section{Introduction}
-\section{Model}
+Chinese word segmentation (CWS), which is no easy task has gained a lot of popularity within the Natural Language Processing (NLP) community lately. This is especially the case since Deep Learning (DL) became prominent and Recurrent Neural Networks  (RNN) have been introduced.
+
+In this project, we explore the use of Bi-directional Long Short Term Memory (LSTM) neural networks. This report will present the approach used, the architecture along with several hyperparameters and the end results. However, the biggest problem remains with dealing with Out-of-Vocabulary words (OOV).
+
+\section{Dataset and State-of-the-Art}
+In this project, we draw inspiration from \cite{paper}, where the researcher's have built, and trained two Bi-LSTM's on 4 varying datasets ('as', 'msr', 'pku, 'cityu') each containing 'training' and 'validation' data which can be found here \cite{data}. These include two which were in Traditional Chinese which needed to be translated into simplified prior to training. The authours' claim to outperform other state-of-the art models, reaching accuracy $\geq 95 \%$ on most datasets. 
+
+Prior to training and building the model, the datasets underwent the following steps of preprocessing. First using HanziConv \cite{hanzi}, the Traditional datasets were converted to to Simplified Chinese. Then From the original file, two files were created; An Input File, which contains no spaces and serves as the X-data, as well as a Label File, which in BIES format serves as the target of classification (in reality these would be numerical classes). 
+
+\section{Model and Approach}
+The approach for building feature vectors from the dataset which would be fed to the model for training is explained in Algorithm \ref{euclid} below.
+
+\begin{algorithm}
+\caption{Model data creation}\label{euclid}
+\begin{algorithmic}[1]
+\item For each dataset, take the Input and label files for training and validation.
+
+\item For the training Input file (no spaces):
+\begin{algorithmic}[1]
+\item create unigrams and bigrams for the entire text file
+\item create separate vocabularies for unigrams and bigrams
+\item while masking OOV create seperate dictionaries mapped by numbers.
+\item read the Input file line by line and create feature vectors  (scalars) using the above dictionaries.
+\end{algorithmic}
+
+\item For the validation Input file (no spaces):
+\begin{algorithmic}[1]
+\item take the training dictionaries and create  feature vectors  (scalars) for each line of the text
+\end{algorithmic}
+
+\item For both Label files (no spaces):
+\begin{algorithmic}[1]
+\item Convert from BIES to numerical classes
+\item perform one-hot-encoding.
+\end{algorithmic}
+
+\item for training purposes, pad accordingly for both files.
+
+\end{algorithmic}
+\end{algorithm}
+
+
+In this paper, the utilised model is the non-stacking model from \cite{paper} shown on Figure \ref{img:model}. Initial testing proved that the stacking model gave much worse results. The last layer is of size 4 (number of BIES classes), and is activated using SoftMax. Several hyperparameters were explored, However, not using grid-search as it proved to be too expensive.
+Some of the most effective ones are presented in Table \ref{table:hyper}.
+
+\begin{table}[]
+\centering
+\caption{Hyperparameters of the BI-LSTM model}
+\label{table:hyper}
+\begin{tabular}{|l|l|l|l|l|}
+\cline{1-2} \cline{4-5}
+Embedding Layer $-$ Unigrams & 64     &  & Recurrent dropout & 0.35 \\ \cline{1-2} \cline{4-5} 
+Embedding Layer $-$ Bigrams  & 16     &  & Batch size        & 128  \\ \cline{1-2} \cline{4-5} 
+Learning rate                & 0.0015 &  & Hidden layer size & 256  \\ \cline{1-2} \cline{4-5} 
+LSTM dropout                 & 0.4    &  & Padding size      & 30   \\ \cline{1-2} \cline{4-5} 
+kernel regularizer l2        & 0.01   &  & bias regulizer l1 & 0.01 \\ \cline{1-2} \cline{4-5} 
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+
+\begin{center}
+\includegraphics[width=0.7\columnwidth, angle = 0]{img/model.png}
+\end{center}
+\caption{Non-Stacking Model used for training, including two separate inputs for unigrams and bigrams.}
+\label{img:model}
+\end{figure}
 \section{Results}
+
+\begin{figure}[H]
+
+\begin{center}
+\includegraphics[width=0.7\columnwidth, angle = 0]{img/pku-msr.png}
+\end{center}
+\caption{Training and validation results compared using loss and accuracy}
+\label{img:results}
+\end{figure}
 \section{Conclusion}
 
-%
-%
-%\begin{figure}[H]
-%\begin{center}
-%\includegraphics[width=0.7\columnwidth, angle = 0]{../report_images/model.png}
-%\end{center}
-%\caption{Keras model.}
-%\label{img:clip}
-%\end{figure}
+
 The student has to deliver via the Google form:
 a link to the Gitlab shared project with the source code and any additional data needed to run the software
 a paper of up to 4 pages (+infinite pages for references, images, tables, graphs, etc.) including: a brief introduction to the project problem, a brief state of the art, an illustration of the methods/approach/techniques (min. 1 page), a quantitative (and ideally a small qualitative) evaluation of the system, some analysis of the results.
@@ -79,24 +146,6 @@ a paper of up to 4 pages (+infinite pages for references, images, tables, graphs
 
 
 
-Algorithm \ref{euclid} depicts the overall procedure of training.
-\begin{algorithm}
-\caption{PPO with Clipped Objective }\label{euclid}
-\begin{algorithmic}[1]
-\item Collect a batch of $N$ (multiple of the mini-batch size) transitions from parallel environments \newline (state, action, log-probabilities,a reward, done-mask (0 if terminal), V(s) (value of the state for each state).
-\item Calculate the returns for the batch using GAE
-\item Calculate: advantage = returns - values
-\item For $e$ epochs: \emph{loop}:
-\begin{algorithmic}[1]
-\item Sample through enough random mini-batches to cover all data.
-\item Pass state into network, obtain action, value of state', entropy and new-log-probabilities.
-\item Calculate the surrogate policy loss and MSE value loss.
-\item Backpropagate the loss through the network using SGD.
-\end{algorithmic}
-\item 5. Repeat above until converged.
-\end{algorithmic}
-\end{algorithm}
-
 
 
 
@@ -104,9 +153,9 @@ Algorithm \ref{euclid} depicts the overall procedure of training.
 \begin{thebibliography}{1}
 
 \bibitem{code} \url{https://github.com/Ostyk/Chinese-LSTM}
-
-
-
+\bibitem{paper} Ma, Ji \& Ganchev, Kuzman \& Weiss, David. (2018). State-of-the-art Chinese Word Segmentation with Bi-LSTMs. 
+\bibitem{data} \url{http://sighan.cs.uchicago.edu/bakeoff2005/}
+\bibitem{hanzi} \url{https://pypi.org/project/hanziconv/}
 
 \end{thebibliography}
 

@@ -144,7 +144,7 @@ class CreateDataset(object):
         #creating unigrams and bigrams
         unigrams, bigrams = self.split_into_grams(raw, 'uni_grams'), self.split_into_grams(raw, 'bi_grams')
         del raw #erase from memory
-        #geting seperate vocavularies
+        #geting seperate vocabularies
         unigrams_vocab, bigrams_vocab = set(unigrams), set(bigrams) 
         #initializing sepeate dictionaries
         uni_word_to_idx, bi_word_to_idx = dict(), dict()
