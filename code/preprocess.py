@@ -47,11 +47,18 @@ class Preprocess(object):
             for name in files:
                 x = os.path.join(self.dataset_path, name)
                 print("File: {}".format(x))
+                
                 if action_type == 'Translate':
-
-                    self.HanziConvert(x)
-                elif list(os.path.splitext(x))[0].split('/')[-1].endswith('simplified'): #checks for duplicates, so only done from original files
+                    if name.split("_")[0] not in ['pku', 'msr']:
+                        self.HanziConvert(x)
+                    elif name.split("_")[0] in ['pku', 'msr']:
+                        #already were in simplified
+                        os.rename(x, x.split(".utf8")[0]+"_simplified.utf8")
+                    
+                #checks for duplicates, so only done from original files
+                elif list(os.path.splitext(x))[0].split('/')[-1].endswith('simplified'): 
                     self.FileEncoder(x, action_type)
+                    
                 else:
                     fail+=1
                 count+=1
@@ -91,7 +98,9 @@ class Preprocess(object):
         #print("N of segments:",len(words))
         def bies_format(word):
             '''changes word to BIES format'''
-            return 'B'+'I'*int(len(word)-2)+'E' if len(word)>1 else 'S'
+            if len(word)>1: return 'B'+'I'*int(len(word)-2)+'E'
+            elif len(word) == 1: return 'S'
+            else: return ''
 
         for word in words:
             #if verbose: print("this is a word: {} of length {}".format(word, len(word)))

@@ -166,7 +166,7 @@ class CreateDataset(object):
         """
         n = 1 if type_ == 'uni_grams' else 2
         grams = []
-        for i in range(len(sentence)-1):
+        for i in range(len(sentence)): #not -1
             gram = sentence[i:i+n]
             grams.append(gram)
         return grams
