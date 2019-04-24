@@ -35,7 +35,7 @@ def predict(input_path, output_path, resources_path):
 
     print(input_path, output_path, resources_path)
     #loading dictionary contiaining vocabularies of unigrams and bigrams
-    with open(os.path.join(resources_path, 'vocabs/cityu_10.json')) as f:
+    with open(os.path.join(resources_path, 'vocabs/msr_pku_30.json')) as f:
         loaded_data = json.load(f)
     # processing the Input file into feature vectors given the dictionary
     A = CreateDataset(LabelFile_path = None,
@@ -54,8 +54,8 @@ def predict(input_path, output_path, resources_path):
     ##################
     # Model loading #
     #################
-    loaded_model = K.models.load_model(os.path.join(resources_path, 'models/model_2019-04-23_22:18:45_-0500.h5'))
-    loaded_model.load_weights(os.path.join(resources_path, 'models/model_weights_2019-04-23_22:18:45_-0500.h5'))
+    loaded_model = K.models.load_model(os.path.join(resources_path, 'models/model_2019-04-24_00:05:02_-0500msr_pku.h5'))
+    loaded_model.load_weights(os.path.join(resources_path, 'models/model_weights_2019-04-24_00:05:02_-0500msr_pku.h5'))
     loaded_model.compile(loss = 'categorical_crossentropy',
                   optimizer = K.optimizers.Adam(lr=0.0015, clipnorm=1., clipvalue=0.5),
                   metrics = ['acc', K.metrics.Precision()])
