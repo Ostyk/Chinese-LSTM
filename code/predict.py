@@ -35,7 +35,7 @@ def predict(input_path, output_path, resources_path):
 
     #print(input_path, output_path, resources_path)
     #loading dictionary contiaining vocabularies of unigrams and bigrams
-    with open(os.path.join(resources_path, 'vocabs/msr_pku_30.json')) as f:
+    with open(os.path.join(resources_path, 'vocabs/pku_msr_30.json')) as f:
         loaded_data = json.load(f)
     # processing the Input file into feature vectors given the dictionary
     A = CreateDataset(LabelFile_path = None,
@@ -54,8 +54,8 @@ def predict(input_path, output_path, resources_path):
     ##################
     # Model loading #
     #################
-    loaded_model = K.models.load_model(os.path.join(resources_path, 'models/model_2019-04-24_00:05:02_-0500msr_pku.h5'))
-    loaded_model.load_weights(os.path.join(resources_path, 'models/model_weights_2019-04-24_00:05:02_-0500msr_pku.h5'))
+    loaded_model = K.models.load_model(os.path.join(resources_path, 'models/model_2019-04-24_12:12:00_-0500pku_msr.h5'))
+    loaded_model.load_weights(os.path.join(resources_path, 'models/model_weights_2019-04-24_12:12:00_-0500pku_msr.h5'))
     loaded_model.compile(loss = 'categorical_crossentropy',
                   optimizer = K.optimizers.Adam(lr=0.0015, clipnorm=1., clipvalue=0.5),
                   metrics = ['acc', K.metrics.Precision()])
@@ -69,7 +69,7 @@ def predict(input_path, output_path, resources_path):
     BIES = {0 : 'B', 1 : 'I', 2 : 'E', 3 : 'S'}
     for i in range(len(predicted)):
         #un-padding to original line lengths
-        to_bies = list(predicted[i][:lengths[i]+1])
+        to_bies = list(predicted[i][:lengths[i]])
         #decoding into BIES format from numerical classes for each line
         BIES_letters = ''.join([BIES[i] for i in to_bies])
         #appending to list of lines in BIES

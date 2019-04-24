@@ -55,15 +55,16 @@
 \includegraphics[width=0.5\textwidth]{img/sapienza_logo.jpg}
 \end{center}
 \maketitle
-\tableofcontents
-\clearpage
+%\tableofcontents
+%\clearpage
 \section{Introduction}
-Chinese word segmentation (CWS), which is no easy task has gained a lot of popularity within the Natural Language Processing (NLP) community lately. This is especially the case since Deep Learning (DL) became prominent and Recurrent Neural Networks  (RNN) have been introduced.
+Chinese word segmentation (CWS) has gained a lot of popularity within the Natural Language Processing (NLP) community lately. This is especially the case since Deep Learning (DL) became prominent and Recurrent Neural Networks  (RNN) have been introduced.
 
 In this project, we explore the use of Bi-directional Long Short Term Memory (LSTM) neural networks. This report will present the approach used, the architecture along with several hyperparameters and the end results. However, the biggest problem remains with dealing with Out-of-Vocabulary words (OOV).
 
 \section{Dataset and State-of-the-Art}
-In this project, we draw inspiration from \cite{paper}, where the researcher's have built, and trained two Bi-LSTM's on 4 varying datasets ('as', 'msr', 'pku, 'cityu') each containing 'training' and 'validation' data which can be found here \cite{data}. These include two which were in Traditional Chinese which needed to be translated into simplified prior to training. The authours' claim to outperform other state-of-the art models, reaching accuracy $\geq 95 \%$ on most datasets. 
+In this project, we draw inspiration from \cite{paper}, where the researchers have built, and trained two Bi-LSTM's on 4 varying datasets ('as', 'msr', 'pku, 'cityu') each containing 'training' and 'validation' data which can be found here \cite{data}. These include two which were in Traditional Chinese which needed to be translated into simplified prior to training. The authors claim that their model outperforms most other state-of-the art models, reaching accuracy $\geq 95 \%$ on most datasets. 
+
 
 Prior to training and building the model, the datasets underwent the following steps of preprocessing. First using HanziConv \cite{hanzi}, the Traditional datasets were converted to to Simplified Chinese. Then From the original file, two files were created; An Input File, which contains no spaces and serves as the X-data, as well as a Label File, which in BIES format serves as the target of classification (in reality these would be numerical classes). 
 
@@ -103,7 +104,7 @@ The approach for building feature vectors from the dataset which would be fed to
 In this paper, the utilised model is the non-stacking model from \cite{paper} shown on Figure \ref{img:model}. Initial testing proved that the stacking model gave much worse results. The last layer is of size 4 (number of BIES classes), and is activated using SoftMax. Several hyperparameters were explored, However, not using grid-search as it proved to be too expensive.
 Some of the most effective ones are presented in Table \ref{table:hyper}.
 
-\begin{table}[]
+\begin{table}[htb]
 \centering
 \caption{Hyperparameters of the BI-LSTM model}
 \label{table:hyper}
@@ -126,9 +127,9 @@ kernel regularizer l2        & 0.01   &  & bias regulizer l1 & 0.01 \\ \cline{1-
 \label{img:model}
 \end{figure}
 \section{Results}
-
+The best model was trained on the 'pku' and 'msr' datasets which amount 105980 samples for training and 5930 sample for validation.  Figure \ref{img:results} present the training results. As shown, the training stops quite early within 4 epochs. This is due to the imposed early stopping monitoring of the validation loss and precision.
+As previously stated the padding size was set to 30. Other sizes were explored however, smaller proved to be to unstable, and larger was not representative of the data as the median line length far below 40.  For testing purposes the model has an extra None input layer which can intake variable line lengths, hence ideal for predictions of large files.
 \begin{figure}[H]
-
 \begin{center}
 \includegraphics[width=0.7\columnwidth, angle = 0]{img/pku-msr.png}
 \end{center}
@@ -138,21 +139,11 @@ kernel regularizer l2        & 0.01   &  & bias regulizer l1 & 0.01 \\ \cline{1-
 \section{Conclusion}
 
 
-The student has to deliver via the Google form:
-a link to the Gitlab shared project with the source code and any additional data needed to run the software
-a paper of up to 4 pages (+infinite pages for references, images, tables, graphs, etc.) including: a brief introduction to the project problem, a brief state of the art, an illustration of the methods/approach/techniques (min. 1 page), a quantitative (and ideally a small qualitative) evaluation of the system, some analysis of the results.
-\\\\\
-
-
-
-
-
-
+To sum up, the model achieves quite good accuracy, however, in this case we are more interested in precision which grows on slightly and then falls. Some of these flaws can be associated to OOV words, which could be slightly resolved better regularization and more data. The final validation (dev) accuracy seems promising but for the growing loss. 
 
 
 \begin{thebibliography}{1}
 
-\bibitem{code} \url{https://github.com/Ostyk/Chinese-LSTM}
 \bibitem{paper} Ma, Ji \& Ganchev, Kuzman \& Weiss, David. (2018). State-of-the-art Chinese Word Segmentation with Bi-LSTMs. 
 \bibitem{data} \url{http://sighan.cs.uchicago.edu/bakeoff2005/}
 \bibitem{hanzi} \url{https://pypi.org/project/hanziconv/}
