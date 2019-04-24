@@ -1,15 +1,23 @@
 # Chinese-LSTM
 Chinese Word Segmentation with Bi-LSTMs
 
-## 1. Download the dataset
-## 2. Initial preprocessing of dataset:
-Inludes:
-1. Translation from Traditional Chinese datasets to Simplified Chinese using Hanzi Convert. Creates a basis of an original file.
-2. Creating an Input File from the translated original file --> no spaces
-3. Label File, line by line using the BIES format
-
+These are to be run inside of code folder
+To get the data preprocessed
 ```
 $ python3 preprocess.py [Dataset type]
-Either 'training','dev','test'
+Either 'training','dev'
 ```
-## 3. Creating dataset of each subset 'msr','cityu','as','pku':
+To run the model
+```
+$ python3 model.py
+```
+To predict
+```
+$ python3 predict.py input_path output_path resources_path
+```
+To Score
+```
+$ python3 score.py prediction_file gold_file
+```
+
+
